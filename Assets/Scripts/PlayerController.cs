@@ -1,4 +1,6 @@
 using UnityEngine;
+using Score;
+using GameOverUI;
 
 namespace Player
 {
@@ -13,6 +15,8 @@ namespace Player
         [SerializeField, Header("ジャンプ力")]
         private float power = 2f;
 
+        private bool isPlaying = true;
+
         private Rigidbody2D rb;
 
         void Awake()
@@ -22,7 +26,28 @@ namespace Player
 
         public void Jump()
         {
-            rb.velocity = Vector3.up * power;
+            if (isPlaying)
+            {
+                rb.velocity = Vector3.up * power;
+            }
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.CompareTag("Score"))
+            {
+                if (isPlaying)
+                {
+                    ScoreViewPresenter.AddScore(1);
+                }
+            }
+            else if (other.CompareTag("Board"))
+            {
+                isPlaying = false;
+                rb.gravityScale = 0;
+                rb.velocity = Vector3.zero;
+                GameOverPresenter.GameOver();
+            }
         }
     }
 }
