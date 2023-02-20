@@ -17,9 +17,6 @@ namespace Board
 
         void Start()
         {
-            Observable.Timer(TimeSpan.Zero, TimeSpan.FromSeconds(interval))
-                .Subscribe(x => LocalInstantiate())
-                .AddTo(disposables);
         }
 
         /// <summary>
@@ -32,6 +29,13 @@ namespace Board
 
             float y = Random.Range(-5f, 5f);
             obj.transform.localPosition = new Vector3(0f, y, 0f);
+        }
+
+        public void StartGame()
+        {
+            Observable.Timer(TimeSpan.Zero, TimeSpan.FromSeconds(interval))
+                .Subscribe(x => LocalInstantiate())
+                .AddTo(disposables);
         }
 
         private void OnDestroy()

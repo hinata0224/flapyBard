@@ -7,6 +7,7 @@ namespace Player
     public interface IReadPlayer
     {
         void Jump();
+        void GameStart();
     }
 
     [RequireComponent(typeof(Rigidbody2D))]
@@ -15,13 +16,15 @@ namespace Player
         [SerializeField, Header("ジャンプ力")]
         private float power = 2f;
 
-        private bool isPlaying = true;
+        private bool isPlaying = false;
 
         private Rigidbody2D rb;
 
         void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
+            rb.gravityScale = 0;
+            rb.velocity = Vector3.zero;
         }
 
         public void Jump()
@@ -30,6 +33,12 @@ namespace Player
             {
                 rb.velocity = Vector3.up * power;
             }
+        }
+
+        public void GameStart()
+        {
+            isPlaying = true;
+            rb.gravityScale = 1;
         }
 
         private void OnTriggerEnter2D(Collider2D other)
